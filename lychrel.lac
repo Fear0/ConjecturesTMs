@@ -1,0 +1,79 @@
+func zero(x){
+    x = 0;
+    return;
+}
+
+func one(x){
+    x = 1;
+    return;
+}
+
+func modulus (x , y , out ) {
+    out = x;
+    while ( out >= y ) {
+        out = out - y;
+    }
+    return;
+}
+
+/* Computes the reverse of number and stores it in reverse*/
+func reverse(number, reverse, remainder, copy, x) {
+    zero(reverse);
+    x = 10;
+    copy = number;
+    while ( copy > 0) {
+        modulus(copy,x,remainder);
+        reverse = (reverse * x) + remainder;
+        copy = copy/x;
+    }
+    return;
+}
+
+func isPalindrome(number, reverse, remainder, copy, x, out) {
+    zero(out);
+    reverse(number,reverse,remainder,copy,x);
+    if ( number == reverse) {
+        one(out);
+    }
+    return;
+}
+
+func isLychrel(number,reverse, remainder, copy, anotherCopy, x ,out){
+
+        reverse(number, reverse, remainder, copy, x);
+        anotherCopy = number + reverse;
+        isPalindrome(anotherCopy,reverse, remainder, copy, x, out);
+        while (out == 0){
+            print anotherCopy;
+             reverse(anotherCopy, reverse, remainder, copy, x);
+             anotherCopy = anotherCopy + reverse;
+             isPalindrome(anotherCopy,reverse, remainder, copy, x, out);
+        }
+        return;
+}
+
+int number;
+one(number);
+int reverse;
+int remainder;
+int copyNumber;
+int anotherCopyNumber;
+int x;
+int out;
+int lychrel;
+one(lychrel);
+
+
+while(lychrel) {
+    zero(lychrel);
+    isLychrel(number,reverse,remainder,copyNumber,anotherCopyNumber,x,lychrel);
+    print reverse;
+    number = number + 1 ;
+    print number;
+}
+halt;
+
+
+
+
+

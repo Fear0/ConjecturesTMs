@@ -1,0 +1,174 @@
+func zero(x){
+    x = 0;
+    return;
+}
+
+func one(x){
+    x = 1;
+    return;
+}
+
+func incr(x){
+    x = x + 1;
+    return;
+}
+
+func modulus (x , y , out ) {
+    out = x;
+    while ( out >= y ) {
+        out = out - y;
+    }
+    return;
+}
+
+func pow(b, e, result,i){
+
+    one(result);
+    if (e == 0) {
+        result = 1;
+        return;
+    }
+    if ( e== 1){
+        result = b;
+        return;
+    }
+    one(i);
+    while ( i <= e){
+
+        result = result * b;
+        incr(i);
+    }
+    return;
+}  
+
+func contains(l, value, i, found, length, element){
+
+    zero(i);
+    zero(found);
+    length = #l;
+    while (i < length){
+        element = l@i;
+        if ( value == element){
+            one(found);
+            return;
+        }
+        incr(i);
+    }
+    return;
+}
+
+
+func additionChain(n, allChains, chain, i, j, k, h, sum, found,foundLength, 
+finalLength, lengthFoundChain, lengthChain,isContained, bool, element,
+lastElement, chainLength, length, firstSummand, 
+secondSummand, chainToAppend,tmp) {
+
+    allChains = :[1,2]:;
+    chain = [];
+    one(bool);
+    zero(k);
+    while (bool & !found){
+        chain = allChains@*k;
+        chainLength = #chain;
+        zero(i);
+        while (i < chainLength){
+            firstSummand = chain@i;
+            j = i + 1;
+            tmp = chainLength-1;
+            if (i == tmp){
+            j = i;
+            }
+            while ( j < chainLength){
+
+                chainToAppend = chain;
+                secondSummand = chain@j;
+                lastElement = chain@tmp;
+                sum = firstSummand + secondSummand;
+                zero(found);
+                /*print sum;*/
+                contains(chain, sum, h, found, length, element);
+                /*print found;*/
+                if ( !found ){
+                    zero(found);
+                    if (sum>lastElement) {
+                    chainToAppend = chainToAppend^sum;
+                    allChains = allChains^*chainToAppend;
+                    if (sum == n){
+                        finalLength = #chainToAppend - 1;
+                        return;
+                    }
+                    }
+                }
+                incr(j);
+                }
+            incr(i);
+        }
+    incr(k);
+    }
+    return;
+}
+
+int n;
+list2 allChains;
+list chain;
+int i;
+int j;
+int k;
+int h;
+int y;
+int sum;
+int found;
+int greaterFound;
+int bool;
+int element;
+int lastElement;
+int chainLength;
+int length;
+int firstSummand;
+int secondSummand;
+int chainToAppend;
+int tmp;
+int foundLength;
+int lengthFoundChain;
+int lengthChain;
+int isContained;
+int conjectureVerified;
+int finalLength;
+int lengthOfAdditionChainOfN;
+int lengthOfAdditionChainOfPowerOfN;
+int result;
+int rightPart;
+
+y = 2;
+
+n = 3;
+one(conjectureVerified);
+while (conjectureVerified) {
+    print n;
+    additionChain(n, allChains, chain, i, j, k, h, sum, found ,foundLength, finalLength,
+        lengthFoundChain, lengthChain,isContained, bool, element,lastElement, 
+        chainLength, length, firstSummand, secondSummand, chainToAppend,tmp);
+
+    lengthOfAdditionChainOfN = finalLength;
+    print lengthOfAdditionChainOfN;
+    pow(y, n, result,i);
+    result = result - 1;
+    print result;
+
+    additionChain(result, allChains, chain, i, j, k, h, sum, found ,foundLength, 
+        finalLength, lengthFoundChain, lengthChain,isContained, bool, element,
+        lastElement, chainLength, length, firstSummand, secondSummand, 
+        chainToAppend,tmp);
+
+    lengthOfAdditionChainOfPowerOfN = finalLength;
+    print lengthOfAdditionChainOfPowerOfN;
+    rightPart = n - 1 + lengthOfAdditionChainOfN;
+    print rightPart;
+
+    if (lengthOfAdditionChainOfPowerOfN > rightPart){
+        zero(conjectureVerified);
+    }
+    print conjectureVerified;
+    incr(n);
+}
+halt;

@@ -1,0 +1,152 @@
+func zero(x){
+    x = 0;
+    return;
+}
+
+func one(x){
+    x = 1;
+    return;
+}
+
+func incr(x){
+    x = x + 1;
+    return;
+}
+
+func modulus (x , y , out ) {
+    out = x;
+    while ( out >= y ) {
+        out = out - y;
+    }
+    return;
+}
+
+/* Figures out if x is prime , and puts the output in y */
+/* Does not modify x , modifies y */
+func isPrime (x , h , y) {
+    if (x == 1) {
+        zero (y );
+        return ;
+        }
+    y = 2;
+    while (x > y) {
+        modulus (x , y , h );
+        if (h == 0) {
+            zero (y );
+            return ;
+        }
+    incr (y );
+    }
+    return ;
+}
+/* stores the prime factor decomposition of x in a list*/
+func primFactDemcoposition(x, y, h,copy, modulusoutput, primeOutput, listoutput){
+
+        y = 2;
+    copy = x;
+    while ( y <= copy){
+        isPrime(y,h,primeOutput);
+        if (primeOutput > 0){
+            modulus(copy,y,modulusoutput);
+            if (modulusoutput == 0){
+                while (modulusoutput == 0){
+                        copy = copy / y;
+                        modulus(copy,y,modulusoutput);
+                        listoutput = listoutput^y;
+                }
+            }
+            
+        }
+        incr(y);
+    }
+    return;
+}
+func  eulerPhi(i, j, ith , jth ,length ,factDecomposition, output){
+    
+    length = #factDecomposition;
+    if (length == 1){
+        i = factDecomposition@0;
+        output = i - 1;
+        return;
+    }
+    i = 0;
+    output = 1;
+    /*print length;*/
+    while ( i < length ){
+        j = i + 1;
+        ith = factDecomposition@i;
+        output = output * (ith - 1);
+        if (j < length){
+        jth = factDecomposition@j;
+        if (ith == jth ){ 
+            output = output * ith;
+            incr(j);
+            if (j < length) {
+            jth = factDecomposition@j;
+            while (ith == jth & j < length ){
+                jth = factDecomposition@j;
+                output = output * ith;
+                print output;
+                incr(j);
+            }
+            }
+        }
+        }
+  
+        i = j;
+    
+        
+
+    }
+    return;
+}
+
+int number;
+int y;
+int h;
+int copy;
+int modulusoutput;
+int primeOutput;
+list listoutput;
+listoutput = [];
+
+int i;
+int j;
+int ith;
+int jth;
+int length;
+list factDecomposition;
+int output;
+int found;
+int numberMinOne;
+int lehmer;
+zero(found);
+number = 2;
+
+/*primFactDemcoposition(number,y,h,copy,modulusoutput,primeOutput,listoutput);
+print listoutput;
+eulerPhi(i,j,ith,jth,length,listoutput,output);
+print output;*/
+
+
+while (found == 0){
+    listoutput = [];
+    print number;
+    isPrime(number,h,output);
+    if (output == 0){
+        primFactDemcoposition(number,y,h,copy,modulusoutput,primeOutput,listoutput);
+        print listoutput;
+        eulerPhi(i,j,ith,jth,length,listoutput,output);
+        numberMinOne = number - 1;
+        modulus(numberMinOne,output,lehmer);
+        print lehmer;
+        if (lehmer == 0) {
+            one(found);
+        }
+    print output;
+    }
+    number = number + 1;
+    
+}
+halt;
+

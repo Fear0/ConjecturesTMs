@@ -1,0 +1,588 @@
+func zero(x){
+    x = 0;
+    return;
+}
+
+func one(x){
+    x = 1;
+    return;
+}
+
+func incr(x){
+    x = x + 1;
+    return;
+}
+
+func modulus (x , y , out ) {
+    out = x;
+    while ( out >= y ) {
+        out = out - y;
+    }
+    return;
+}
+
+func pow(b, e, result,i){
+
+    one(result);
+    if (e == 0) {
+        result = 1;
+        return;
+    }
+    if ( e== 1){
+        result = b;
+        return;
+    }
+    one(i);
+    while ( i <= e){
+
+        result = result * b;
+        incr(i);
+    }
+    return;
+}   
+
+func fill_n(l , i , length, value){
+
+    zero(i);
+    l =[];
+    while ( i < length){
+        l = l ^ value;
+        incr(i);
+    }
+    return;
+}
+
+  
+/* inserts value at position i in the list l*/
+func insertAt(l, copy, element, value, length, j ,i){
+    copy = [];
+    zero(j);
+    length = #l;
+    if ( i >= length){
+        return;
+    }
+    while ( j < i){
+        element = l@j;
+        copy = copy ^ element;
+        incr(j);
+    }
+    copy = copy ^ value;
+    incr(j);
+    while ( j < length){
+        element = l@j;
+        copy = copy ^ element;
+        incr(j);
+    }
+    l = copy;
+    return;
+
+}
+/* inserts value(list) at position i in the list2 l*/
+func insertAt2(l, copy, element, value, length, j ,i){
+    copy = [];
+    zero(j);
+    length = #*l;
+    if ( i >= length){
+        return;
+    }
+    while ( j < i){
+        element = l@*j;
+        copy = copy ^* element;
+        incr(j);
+    }
+    copy = copy ^* value;
+    incr(j);
+    while ( j < length){
+        element = l@*j;
+        copy = copy ^* element;
+        incr(j);
+    }
+    l = copy;
+    return;
+
+}
+
+
+func isUndirected(graph,holder,node,otherNode,value,i,k,size,valid){
+
+    zero(i);
+    size = #*graph;
+    while (i <  size){
+        holder = [];
+        node = graph@*i;
+        zero(k);
+        while (k < size){
+            otherNode = graph@*k;
+            value = otherNode@i;
+            holder = holder^value;
+            incr(k);
+        }
+        if (holder != node){
+            zero(valid);
+            return;
+        }
+        incr(i);
+    }
+    one(valid);
+    return;
+}
+
+func reverseVertices(edge, h, first , second, output){
+
+    output = [];
+    h = 0;
+    first = edge@h;
+    h = 1;
+    second = edge@h;
+    output = output ^ second;
+    output = output ^ first;
+    return;
+}
+
+/* return if edge is in edges*/
+func containsEdge(edges , edge , i, length, iterator, output){
+
+    zero(i);
+    zero(output);
+    length = #*edges;
+    if (length == 0){
+        return;
+    }
+    while ( i < length) {
+        iterator = edges@*i;
+        if (iterator == edge){
+            one(output);
+            return;
+        }
+        incr(i);
+    }
+    return;
+}
+
+
+/* get all edges of graph*/
+func getEdges(graph,reverse, h, first , second , adjacentsVertices, adjacentVertex, edge , length , lengthContainer,iterator, lengthAdjacent, i, k, j, contained , edges){
+
+    edges = [];
+    length = #*graph;
+    i = 0;
+    j = 0;
+    while ( i < length){
+        adjacentsVertices = graph@*i;
+        lengthAdjacent = #adjacentsVertices;
+        while ( j < lengthAdjacent){
+            edge = [];
+            adjacentVertex = adjacentsVertices@j;
+            edge = edge ^ i;
+            edge = edge ^ adjacentVertex;
+            reverseVertices(edge,h,first,second,reverse);
+            containsEdge(edges, reverse, k, lengthContainer, iterator, contained); 
+            if (contained == 0){
+                edges = edges ^* edge;
+            }
+            incr(j);
+        }
+    zero(j);
+    incr(i);
+
+    }
+    return;
+
+}
+
+
+
+
+/* return if vertex v is in vertices */
+func containsVertex(vertices, v,i,length,item,contained){
+
+    zero(contained);
+    zero(i);
+    length = #vertices;
+    while ( i <  length){
+        item = vertices@i;
+        if (v == item){
+            one(contained);
+            return;
+        }
+        incr(i);
+    }
+    return;
+}
+
+/* creates adjacency list from adjacency matrix*/
+func adjacencyMatrixToAdjacencyList(matrix,graph, vertex, newVertex, i,j,length,isAdjacent){
+
+    graph = [];
+    newVertex = [];
+    zero(i);
+    length = #*matrix;
+    while ( i < length){
+        newVertex = [];
+        vertex = matrix@*i;
+        zero(j);
+        while ( j < length){
+            isAdjacent = vertex@j;
+            if (isAdjacent){
+                newVertex = newVertex^j;
+            }
+            incr(j);
+        }
+        graph = graph^*newVertex;
+        incr(i);
+    }
+    return;
+
+}
+
+func isCubic(graph,y,cubic,i,lengthGraph,lengthAdjaceVertices,adjacentVertices){
+
+    zero(i);
+    y = 3;
+    lengthGraph = #*graph;
+    while (i < lengthGraph){
+        adjacentVertices =graph@*i;
+        lengthAdjaceVertices = #adjacentVertices;
+        if (lengthAdjaceVertices != y){
+            zero(cubic);
+            return;
+        } 
+        incr(i);
+    }
+    one(cubic);
+    return;
+}
+
+func isCubic(matrix,y,k,i,j,count,lengthGraph,lengthAdjacentVertices,adjacentVertices,element,cubic){
+    zero(i);
+    y = 3;
+    k = 1;
+    lengthGraph = #*matrix;
+    while (i < lengthGraph){
+        adjacentVertices =matrix@*i;
+        lengthAdjacentVertices = #adjacentVertices;
+        zero(j);
+        zero(count);
+        while ( j < lengthAdjacentVertices ){
+            element = adjacentVertices@j;
+            if (element == k){
+                incr(count);
+            }
+            incr(j);
+        }
+        if (count!=y){
+            zero(cubic);
+            return;
+        }
+        incr(i);
+    }
+    one(cubic);
+    return;
+}
+
+
+/* iterates over all (undirected) adjacency matrices of n nodes */
+func generateAdjacencyMatrices(allMatrices,n,matrix,holder,node,otherNode,value,i,j,c,zero,counter,count,y,e,max,out,k,size,copy,copy2,element,element2,length,lengthGraph,lengthAdjacentVertices,cubic,adjacentVertices,valid){
+
+
+    allMatrices = [];
+    zero(zero);
+    y = 2;
+    e = n*n - n;
+    pow(y, e, max,i);
+    one(counter);
+    while ( counter  < max){
+        c = counter;
+        zero(i);
+        matrix = [];
+        node = [];
+        fill_n(node , i , n, zero);
+        zero(i);
+        while (i < n){
+            matrix = matrix^*node;
+            incr(i);
+        }
+        zero(i);
+        while ( i < n & c){
+            fill_n(node , e , n, zero);
+            zero(j);
+            while (j<n & c){
+                if (j!=i){
+                    modulus(c , y , out) ;
+                    insertAt(node, copy, element, out, length, k ,j);
+                    c = c / 2;       
+                }
+              incr(j);
+            }
+            insertAt2(matrix, copy2, element2, node, length, j ,i);
+            incr(i);
+        }
+        print matrix;
+        zero(valid);
+        zero(cubic);
+        isUndirected(matrix,holder,node,otherNode,value,i,k,size,valid);
+        isCubic(matrix,y,k,i,j,count,lengthGraph,lengthAdjacentVertices,adjacentVertices,element,cubic);
+        if(valid&cubic){
+          print matrix;
+          allMatrices = allMatrices^*matrix;
+        }
+        y = 2;
+        incr(counter);
+    }
+    return;
+}
+
+/* creates adjacency list from adjacency matrix*/
+func adjacencyMatrixToAdjacencyList(matrix,graph, vertex, newVertex, i,j,length,isAdjacent){
+
+    graph = [];
+    newVertex = [];
+    zero(i);
+    length = #*matrix;
+    while ( i < length){
+        newVertex = [];
+        vertex = matrix@*i;
+        zero(j);
+        while ( j < length){
+            isAdjacent = vertex@j;
+            if (isAdjacent){
+                newVertex = newVertex^j;
+            }
+            incr(j);
+        }
+        graph = graph^*newVertex;
+        incr(i);
+    }
+    return;
+
+}
+
+func pop(queue,path,length,tmp,i,element2){
+
+    zero(i);
+    path = queue@*i;
+    one(i);
+    length = #*queue;
+    tmp = [];
+    while (i < length){
+        element2 = queue@*i;
+        tmp = tmp ^* element2;
+        incr(i);
+    }
+    queue = tmp;
+    return;
+}
+
+func greater(vertices, value, vertex, lengthVertices, j, valid){
+    
+    lengthVertices = #vertices;
+    zero(j);
+    while ( j < lengthVertices){
+        vertex = vertices@j;
+        if (vertex > value){
+            zero(valid);
+            return;
+        }
+        incr(j);
+    }
+    one(valid);
+    return;
+}
+
+func isPowerOfTwo(x,y,i,valid){
+
+    one(i);
+    y = 2;
+    while (i){
+        if( x == y){
+            one(valid);
+            return;
+        }
+        if ( y > x){
+            zero(valid);
+            return;
+        }
+        y = y * 2;
+    }
+    return;
+}
+func findCycles(graph,queue,cycles,size,i,j,k,y,length,queueLength,lengthVertices,holder,path,tmp,element,element2,last,head,tail,adjacentVerticesOfTail,item,contained,aux,vertex,valid,hasTrueCycle){
+
+    queue = [];
+    cycles = [];
+    size = #*graph;
+    zero(i);
+    while (i < size){
+        holder = [];
+        holder = holder^i;
+        queue = queue^*holder;
+        incr(i);
+    }
+    queueLength = #*queue;
+    while(queueLength){
+        pop(queue,path,length,tmp,i,element2);
+        print queue;
+        print path;
+        zero(i);
+        last = #path;
+        last = last - 1;
+        head = path@i;
+        tail = path@last;
+        adjacentVerticesOfTail = graph@*tail;
+        k = #path;
+        containsVertex(adjacentVerticesOfTail, head,i,length,item,contained);
+        if (contained){
+            aux = path;
+            aux = aux^head;
+            cycles = cycles^*aux;
+             if (k > 2){
+                isPowerOfTwo(k,y,i,valid);
+                i = #*cycles - 1;
+                if(valid){
+                    aux = cycles@*i;
+                    print aux;
+                    one(hasTrueCycle);
+                    return;
+                 }
+              }
+        }
+    
+        zero(i);
+        length = #adjacentVerticesOfTail;
+        while (i < length){
+            element = adjacentVerticesOfTail@i;
+            greater(path,element, vertex, lengthVertices, j, valid);
+            print valid;
+            if (valid){
+                aux = path;
+                aux = aux^element;
+                queue = queue^*aux;
+            }
+            incr(i);
+
+        }
+    queueLength = #*queue;
+    }
+    zero(hasTrueCycle);
+    return;
+}
+
+list2 graph;
+list2 graph1; 
+list2 edges;
+list2 totalGraph;
+list2 matrix;
+list2 allMatrices;
+list2 rawVertices;
+list2 copy2;
+list2 queue;
+list2 cycles;
+list2 tmp;
+
+list element2;
+list reverse;
+list colors;
+list edge;
+list holder;
+list node;
+list otherNode;
+list copy;
+list holder;
+list node;
+list element;
+list adjacents;
+list adjacentsVertices;
+list vertices;
+list vertexAsList;
+list otherNode;
+list vertex;
+list newVertex;
+list adjacentVertices;
+list adjacentVerticesOfTail;
+list holder;
+list path;
+list aux;
+list element2;
+
+int m;
+int c;
+int v;
+int V;
+int h;
+int value;
+int first;
+int second;
+int item;
+int length;
+int lengthElement;
+int lengthContainer;
+int iterator;
+int j;
+int k;
+int i;
+int size;
+int zero;
+int otherLength;
+int lengthAdjacent;
+int adjacentVertex;
+int vertexColor;
+int neighbor;
+int valid;
+int contained;
+int contained1;
+int contained2;
+int output;
+int clr;
+int n;
+int y;
+int e;
+int max;
+int size;
+int out;
+int element;
+int length;
+int valid;
+int colorNeighbor;
+int colorNode;
+int found;
+int flag1;
+int flag2;
+int flag3;
+int size;
+int value; 
+int counter;
+int totalColoringConjecture;
+int numberMatrices;
+int isAdjacent;
+int f;
+int upperBound;
+int nodesNumber;
+int lengthGraph;
+int lengthAdjacentVertices;
+int cubic;
+int count;
+int queueLength;
+int lengthVertices;
+int last;
+int head;
+int tail;
+int hasTrueCycle;
+
+
+nodesNumber = 4;
+one(hasTrueCycle);
+while (hasTrueCycle){
+    generateAdjacencyMatrices(allMatrices,nodesNumber,matrix,holder,node,otherNode,value,i,j,c,zero,counter,count,y,e,max,out,k,size,copy,copy2,element,element2,length,lengthGraph,lengthAdjacentVertices,cubic,adjacentVertices,valid);
+    zero(f);
+    numberMatrices = #*allMatrices;
+    while ( f < numberMatrices){
+        matrix = allMatrices@*f;
+        adjacencyMatrixToAdjacencyList(matrix,graph, vertex, newVertex, i,j,length,isAdjacent);
+        print graph;
+        findCycles(graph,queue,cycles,size,i,j,k,y,length,queueLength,lengthVertices,holder,path,tmp,element,element2,last,head,tail,adjacentVerticesOfTail,item,contained,aux,vertex,valid,hasTrueCycle);
+        incr(f);
+    }
+    nodesNumber = nodesNumber + 2;
+}
+
+halt;
